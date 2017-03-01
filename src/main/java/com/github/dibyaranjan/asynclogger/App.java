@@ -2,13 +2,13 @@ package com.github.dibyaranjan.asynclogger;
 
 import java.io.IOException;
 
-/**
- * Hello world!
- *
- */
+import com.github.dibyaranjan.asynclogger.spring.loader.ApplicationContextLoader;
+
 public class App {
-	public static void main(String[] args) throws IOException {
-		AppRunner runner = new AppRunner();
-		runner.start();
-	}
+    public static void main(String[] args) throws IOException {
+        ApplicationContextLoader contextLoader = new ApplicationContextLoader();
+        contextLoader.loadApplicationContext();
+        AppRunner runner = (AppRunner) contextLoader.getBean(AppRunner.class);
+        runner.start();
+    }
 }

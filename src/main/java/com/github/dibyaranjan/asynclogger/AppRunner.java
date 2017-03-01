@@ -1,5 +1,7 @@
 package com.github.dibyaranjan.asynclogger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.github.dibyaranjan.asynclogger.server.SimpleHttpServer;
 
 /**
@@ -8,10 +10,10 @@ import com.github.dibyaranjan.asynclogger.server.SimpleHttpServer;
  * @author Dibya
  */
 public class AppRunner {
-	public void start() {
-		SimpleHttpServer server = new SimpleHttpServer();
-		//TODO - Fetch from properties file
-		server.setPort(3177);
-		server.start();
-	}
+    @Autowired
+    private SimpleHttpServer server;
+    
+    public void start() {
+        server.listenHttpRequests();
+    }
 }

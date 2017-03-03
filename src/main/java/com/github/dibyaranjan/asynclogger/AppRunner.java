@@ -2,7 +2,7 @@ package com.github.dibyaranjan.asynclogger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.github.dibyaranjan.asynclogger.server.SimpleHttpServer;
+import com.sun.net.httpserver.HttpServer;
 
 /**
  * 
@@ -11,9 +11,9 @@ import com.github.dibyaranjan.asynclogger.server.SimpleHttpServer;
  */
 public class AppRunner {
     @Autowired
-    private SimpleHttpServer server;
+    private HttpServer httpServer;
     
     public void start() {
-        server.listenHttpRequests();
+        httpServer.start();
     }
 }

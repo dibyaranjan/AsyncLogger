@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.github.dibyaranjan.asynclogger.AppRunner;
-import com.github.dibyaranjan.asynclogger.server.SimpleHttpServer;
 import com.github.dibyaranjan.asynclogger.server.SimpleRequestHandler;
 import com.sun.net.httpserver.HttpServer;
 
@@ -32,13 +31,7 @@ public class ApplicationBeans {
 			throw new BeanCreationException("Could not create HttpServer with port : " + portNumber);
 		}
 	}
-	
-	
-	@Bean
-	public SimpleHttpServer getSimpleHttpServer() {
-		return new SimpleHttpServer();
-	}
-	
+
 	@Bean
 	public AppRunner getAppRunner() {
 	    return new AppRunner();

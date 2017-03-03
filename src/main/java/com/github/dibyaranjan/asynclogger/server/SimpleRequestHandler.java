@@ -1,6 +1,7 @@
 package com.github.dibyaranjan.asynclogger.server;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,15 +18,25 @@ import com.sun.net.httpserver.HttpHandler;
  */
 public class SimpleRequestHandler implements HttpHandler {
     private static final Logger logger = LogManager.getLogger();
+    private static final String SUCCESS = "{\"success\" : \"1\"}";
+    private static final String FAILURE = "{\"success\" : \"0\"}";
 
     public void handle(HttpExchange exchange) throws IOException {
-        GetParameterParser parser = new GetParameterParser();
-        Map<UrlParameterKey, String> logMap = parser.parseQueryString(exchange.getRequestURI().getQuery());
-        logToFile(logMap);
-        exchange.sendResponseHeaders(200, 2);
-        exchange.getResponseBody().write("as".getBytes());
-        exchange.getResponseBody().flush();
-        exchange.getResponseBody().close();
+        OutputStream os = exchange.getResponseBody();
+        try {
+            GetParameterParser parser = new GetParameterParser();
+            Map<UrlParameterKey, String> logMap = parser.parseQueryString(exchange.getRequestURI().getQuery());
+            logToFile(logMap);
+            exchange.sendResponseHeaders(200, SUCCESS.length());
+            os.write(SUCCESS.getBytes());
+        } catch (IllegalArgumentException e) {
+            logger.error(e);
+            exchange.sendResponseHeaders(200, FAILURE.length());
+            os.write(FAILURE.getBytes());
+        } finally {
+            os.close();
+        }
+
     }
 
     private void logToFile(Map<UrlParameterKey, String> logMap) {

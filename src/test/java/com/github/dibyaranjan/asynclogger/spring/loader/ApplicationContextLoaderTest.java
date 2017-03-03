@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
-import com.github.dibyaranjan.asynclogger.server.SimpleHttpServer;
+import com.sun.net.httpserver.HttpServer;
 
 public class ApplicationContextLoaderTest {
     private ApplicationContextLoader contextLoader;
@@ -20,7 +20,7 @@ public class ApplicationContextLoaderTest {
     }
 
     public void testPackageScanning() {
-        SimpleHttpServer bean = (SimpleHttpServer) contextLoader.getBean(SimpleHttpServer.class);
+        HttpServer bean = (HttpServer) contextLoader.getBean(HttpServer.class);
 
         if (bean == null) {
             Assert.fail("Could not create bean");

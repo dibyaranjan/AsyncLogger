@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.github.dibyaranjan.asynclogger.constant.UrlParameterKey;
+import com.github.dibyaranjan.asynclogger.logger.AsyncLogger;
 import com.github.dibyaranjan.asynclogger.parser.GetParameterParser;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -20,6 +21,12 @@ public class SimpleRequestHandler implements HttpHandler {
     private static final Logger logger = LogManager.getLogger();
     private static final String SUCCESS = "{\"success\" : \"1\"}";
     private static final String FAILURE = "{\"success\" : \"0\"}";
+
+    private AsyncLogger asyncLogger;
+
+    public void setAsyncLogger(AsyncLogger asyncLogger) {
+        this.asyncLogger = asyncLogger;
+    }
 
     public void handle(HttpExchange exchange) throws IOException {
         OutputStream os = exchange.getResponseBody();
@@ -40,18 +47,6 @@ public class SimpleRequestHandler implements HttpHandler {
     }
 
     private void logToFile(Map<UrlParameterKey, String> logMap) {
-        StringBuilder sb = new StringBuilder();
-        // [ID] [Souce.method] message
-        sb.append("[");
-        sb.append(logMap.get(UrlParameterKey.ID));
-        sb.append("] ");
-        sb.append("[");
-        sb.append(logMap.get(UrlParameterKey.SOURCE_NAME));
-        sb.append(".");
-        sb.append(logMap.get(UrlParameterKey.METHOD_NAME));
-        sb.append("] ");
-        sb.append(logMap.get(UrlParameterKey.MESSAGE));
-
-        logger.info(sb.toString());
+        asyncLogger.log(logMap);
     }
 }

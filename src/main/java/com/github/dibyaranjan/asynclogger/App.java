@@ -13,10 +13,12 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         try {
+            logger.debug("Starting application...");
             ApplicationContextLoader contextLoader = new ApplicationContextLoader();
             contextLoader.loadApplicationContext();
             AppRunner runner = (AppRunner) contextLoader.getBean(AppRunner.class);
             runner.start();
+            logger.debug("Application started!");
         } catch (Exception e) {
             logger.error(ExceptionUtils.getFullStackTrace(e));
         }
